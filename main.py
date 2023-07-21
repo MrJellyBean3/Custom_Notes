@@ -2,3 +2,6 @@
 import wxpython
 
 print("Hello World")
+
+#setup wxpython
+print("Setting up wxpython")
