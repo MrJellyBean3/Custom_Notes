@@ -31,8 +31,16 @@ class TextBoxFrame(wx.MiniFrame):
         self.SetSizer(self.main_sizer)
 
     def on_delete(self, event):
-        self.parent.text_box_frames.remove(self)  # Remove this frame from parent's list
-        self.Destroy()  # Close and destroy this frame
+        dialog = wx.MessageDialog(self, 
+                                  "Are you sure you want to delete this text box?", 
+                                  "Confirm Delete", 
+                                  wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
+
+        result = dialog.ShowModal()
+
+        if result == wx.ID_YES:
+            self.parent.text_box_frames.remove(self)  # Remove this frame from parent's list
+            self.Destroy()  # Close and destroy this frame
 
 class MyFrame(wx.Frame):
     def __init__(self, parent):
@@ -91,6 +99,7 @@ class MyFrame(wx.Frame):
 
             for box in config["text_boxes"]:
                 frame = TextBoxFrame(self, box["position"], box["size"], box["content"], box["title"])  # Load the title here
+                self.text_box_frames.append(frame)
                 frame.Show()
         except FileNotFoundError:
             pass
